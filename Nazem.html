@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nazem — Modern Tech Animations</title>
+<link rel="icon" href="https://img.icons8.com/?size=100&id=11764&format=png&color=8a2be2" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner" role="banner">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="logo-dot" aria-hidden="true"></div>
+      <div class="brand">Nazem</div>
+    </div>
+
+    <nav class="nav" role="navigation" aria-label="القائمة الرئيسية">
+      <a href="#home" class="nav-link">الرئيسية</a>
+      <a href="#plan" class="nav-link">خطة اليوم</a>
+      <a href="#stats" class="nav-link">الإحصائيات</a>
+      <a href="#goals" class="nav-link">أهدافي</a>
+      <a href="#settings" class="nav-link">الإعدادات</a>
+    </nav>
+
+    <div class="controls-head" role="toolbar" aria-label="أدوات">
+      <div id="status" style="color:var(--muted);font-size:13px">جاهز</div>
+      <div id="statusSmall" style="color:var(--muted);font-size:13px; display:none">جاهز</div>
+      <button class="btn primary focus-glow" id="startBtn" title="ابدأ اليوم">▶️ ابدأ اليوم</button>
+      <button class="btn focus-glow" id="pauseBtn" disabled title="إيقاف/استئناف">⏸️ إيقاف الوقت</button>
+    </div>
+  </div>
+</header>
+
+<div class="banner" id="pauseBanner">⏸ تم إيقاف الوقت مؤقتًا</div>
+<div class="particles" aria-hidden="true"></div>
+
+<main class="app" role="main">
+  <div class="main">
+    <!-- Home -->
+    <section id="home" class="card section fadeInUp">
+      <h1>نظّم يومك — تجربة حديثة وسلسة</h1>
+      <div class="lead">اضغط "ابدأ اليوم" والجدول سيُبنى آليًا لمدة 8 ساعات مذاكرة. يمكنك إيقاف الوقت للمادة الحالية، قياس التأخير، واستعراض إحصائيات مفصّلة. الموقع معزز بالأنيميشن الحديث (Modern Tech) — بنفسجي نيون.</div>
+    </section>
+
+    <!-- Plan -->
+    <section id="plan" class="card section fadeInUp" style="margin-top:12px">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn primary focus-glow" id="startBtn2" onclick="startDay()">▶️ ابدأ اليوم</button>
+          <button class="btn focus-glow" id="regenBtn">🔁 أعد توزيع</button>
+        </div>
+
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+          <button class="btn small" id="saveScheduleBtn">💾 حفظ</button>
+          <button class="btn small" id="loadScheduleBtn">📂 تحميل</button>
+          <button class="btn small" id="exportBtn">⬇️ تصدير</button>
+        </div>
+      </div>
+
+      <div id="timeline" class="timeline" style="margin-top:14px">
+        <div class="centerMuted" style="padding:30px 12px">لم تبدأ اليوم بعد — اضغط "ابدأ اليوم" لبدء الجدول من الوقت الحالي.</div>
+      </div>
+
+      <div class="timerBar" title="تقدم المذاكرة" style="margin-top:14px"><div id="timerFill" class="timerFill"></div></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap">
+        <div class="summary" id="todaySummary" style="margin-top:12px">ملخص اليوم: — لم يبدأ بعد</div>
+        <div style="text-align:right;color:var(--muted);font-size:13px">
+          <div id="currentSlotLabel">لا يوجد شغل الآن</div>
+          <div id="currentTimer" style="font-weight:700">00:00:00</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section id="stats" class="card section fadeInUp" style="margin-top:16px">
+      <h3>الإحصائيات</h3>
+      <div style="margin-top:8px;color:var(--muted)">تقدمك، نسبة الإنجاز، ووقت التوقف لكل مادة محفوظ محليًا.</div>
+      <div id="statsContent" style="margin-top:12px"></div>
+    </section>
+
+    <!-- Goals -->
+    <section id="goals" class="card section fadeInUp" style="margin-top:16px">
+      <h3>أهدافي</h3>
+      <label class="label">أضف هدفًا جديدًا</label>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input id="newGoal" placeholder="مثال: قراءة 10 صفحات في الانجليزي" style="flex:1;min-width:160px;padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit">
+        <button class="btn primary" id="addGoal">➕ أضف</button>
+      </div>
+      <div id="goalsList" style="margin-top:12px"></div>
+    </section>
+
+    <!-- Settings placeholder -->
+    <section id="settings" class="card section fadeInUp" style="margin-top:16px">
+      <h3>الإعدادات</h3>
+      <div style="color:var(--muted);margin-top:8px">Coming soon — إعدادات متقدمة ستكون هنا.</div>
+    </section>
+  </div>
+
+  <!-- Sidebar -->
+  <aside>
+    <div class="card tilt" id="quickCard">
+      <div class="inner" style="padding:12px">
+        <h4>الإعدادات السريعة</h4>
+        <label class="label">مدة الصلاة (دقيقة)</label>
+        <input type="number" id="prayerDuration" value="30" class="fullwidth">
+        <label class="label">مدة الاستراحة (دقيقة)</label>
+        <input type="number" id="breakMinutes" value="15" class="fullwidth">
+        <label class="label">المدينة</label>
+        <input type="text" id="cityInput" value="Cairo" class="fullwidth">
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn primary" id="applyBtn">تطبيق</button>
+          <button class="btn" id="notifyPermBtn">🔔 إشعارات</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h4>تبديل المواد</h4>
+      <label class="label">المادة 1 (رقم)</label>
+      <input type="number" id="swapIndex1" min="1" placeholder="مثال: 1" class="fullwidth">
+      <label class="label">المادة 2 (رقم)</label>
+      <input type="number" id="swapIndex2" min="1" placeholder="مثال: 5" class="fullwidth">
+      <label class="label">اختر مادة</label>
+      <select id="newSubjectSelect" class="fullwidth">
+        <option value="">اختر مادة</option>
+        <option value="رياضة">رياضة</option>
+        <option value="إنجليزي">إنجليزي</option>
+        <option value="فيزياء">فيزياء</option>
+        <option value="كيمياء">كيمياء</option>
+        <option value="أحياء">أحياء</option>
+        <option value="قرآن">قرآن</option>
+        <option value="حديث">حديث</option>
+        <option value="تفسير">تفسير</option>
+        <option value="توحيد">توحيد</option>
+        <option value="فقه">فقه</option>
+        <option value="صرف">صرف</option>
+        <option value="أدب">أدب</option>
+        <option value="نصوص">نصوص</option>
+        <option value="تعبير">تعبير</option>
+        <option value="بلاغة">بلاغة</option>
+        <option value="نحو">نحو</option>
+      </select>
+      <button class="btn primary" id="swapBtn" style="margin-top:8px">🔄 تبديل</button>
+    </div>
+  </aside>
+</main>
+
+<!-- hidden import file input -->
+<input type="file" id="importFile" accept=".json" style="display:none">
+
+<!-- audio -->
+<audio id="pingAudio" preload="auto" src="https://www.soundjay.com/button/sounds/beep-07.mp3"></audio>
+
+<script src="main.js"></script>
+</body>
+</html>
